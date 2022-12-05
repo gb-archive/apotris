@@ -96,11 +96,11 @@ void loadSave() {
         for (int i = 0; i < oldSize; i++)
             tmp[i] = sf[i];
 
-        memcpy16(&tmp[sizeof(Settings) + sizeof(u8)], &sf[oldSize], (sizeof(Save) - oldSize) / 2);
+        memcpy16(&tmp[pmSettings + sizeof(u8)], &sf[oldSize], (pmSave - oldSize) / 2);
 
         setDefaults(temp,2);
 
-        memcpy32(savefile, temp, sizeof(Save) / 4);
+        memcpy32(savefile, temp, pmSave / 4);
 
         setDefaultKeys();
 
@@ -116,13 +116,13 @@ void loadSave() {
         for (int i = 0; i < oldSize; i++)
             tmp[i] = sf[i];
 
-        memcpy16(&tmp[sizeof(Settings) + sizeof(u8)], &sf[oldSize], (sizeof(Save) - oldSize) / 2);
+        memcpy16(&tmp[pmSettings + sizeof(u8)], &sf[oldSize], (pmSave - oldSize) / 2);
 
         setDefaults(temp,1);
 
         setDefaultKeys();
 
-        memcpy32(savefile, temp, sizeof(Save) / 4);
+        memcpy32(savefile, temp, pmSave / 4);
 
         delete temp;
 
