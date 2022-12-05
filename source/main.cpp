@@ -41,6 +41,8 @@
 
 using namespace Tetris;
 
+const std::string save_type = "SRAM_Vnnn";
+
 mm_word myEventHandler();
 bool unlock_gbp();
 void initRumble();
