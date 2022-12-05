@@ -566,7 +566,7 @@ void Game::update() {
         dropping = false;
         return;
     }else{
-        if (pawn.lowest == pawn.y && !zoneTimer)
+        if (pawn.lowest <= pawn.y && !zoneTimer)
             lockTimer--;
 
         if (lockTimer == 0 && rotationSystem != NRS){
@@ -1243,10 +1243,10 @@ void Game::next() {
             }
         }
         if(check)
-            break;
+           break;
     }
 
-    if (check || !checkRotation(0, 0, pawn.rotation) || gameMode == CLASSIC){
+   if (check || !checkRotation(0, 0, pawn.rotation) || gameMode == CLASSIC){
         pawn.y-=1;
         if (!checkRotation(0, 0, pawn.rotation)){
             if(zoneTimer && zonedLines)
@@ -1385,7 +1385,7 @@ void Game::hold(int dir) {
         pawn.current = temp;
         pawn.setBlock(rotationSystem);
         pawn.x = (int)lengthX / 2 - 2;
-		pawn.y = (int)lengthY / 2 - 1;
+		pawn.y = (int)lengthY / 2;
 
         if(pawn.big){
             pawn.x/=2;
@@ -1399,6 +1399,32 @@ void Game::hold(int dir) {
         pawn.rotation = sum + (sum < 0) * 4;
     } else
         pawn.rotation = 0;
+
+    //check if stack has reached top 3 lines
+    bool check = false;
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 10; j++){
+            if(board[21+i][j] != 0){
+                check = true;
+                break;
+            }
+        }
+        if(check)
+            break;
+    }
+
+    if (check || !checkRotation(0, 0, pawn.rotation) || gameMode == CLASSIC){
+        pawn.y-=1;
+        if (!checkRotation(0, 0, pawn.rotation)){
+            if(zoneTimer && zonedLines)
+                endZone();
+            else if(gameMode == TRAINING)
+                clearBoard();
+            else{
+                lost = 1;
+            }
+        }
+    }
 
     sounds.hold = 1;
     holdCounter++;
