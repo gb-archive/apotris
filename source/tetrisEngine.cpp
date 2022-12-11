@@ -1700,8 +1700,11 @@ void Game::generateGarbage(int height,int mode){
         for(int i = lengthY-height; i < lengthY; i++){
             int prevHole = hole;
             if(!mode || qran() % 10 < 3){
+                int counter = 0;
                 do{
                     hole = qran() % lengthX;
+                    if(++counter > 10)
+                        break;
                 }while((!board[i-1][hole] && height < garbageHeight) || hole == prevHole);
             }
             for(int j = 0; j < lengthX; j++){
@@ -1727,8 +1730,11 @@ void Game::generateGarbage(int height,int mode){
         for(int i = lengthY/2-height; i < lengthY/2; i++){
             int prevHole = hole;
             if(!mode || qran() % 10 < 3){
+                int counter = 0;
                 do{
                     hole = qran() % (lengthX/2);
+                    if(++counter > 5)
+                        break;
                 }while((!board[(i-1)*2][hole*2] && height < garbageHeight) || hole == prevHole);
             }
             for(int j = 0; j < lengthX/2; j++){
