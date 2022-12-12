@@ -1221,7 +1221,7 @@ void gameLoop(){
         VBlankIntrWait();
 
         rumble_update();
-        if (clearTimer >= maxClearTimer || maxClearTimer <= 0 || (game->gameMode == SURVIVAL && clearTimer)) {
+        if (clearTimer >= maxClearTimer || maxClearTimer <= 0) {
             game->removeClearLock();
             shake = -shakeMax * (savefile->settings.shakeAmount) / 4;
             rumbleTimer = rumbleMax * 2 * savefile->settings.rumble;

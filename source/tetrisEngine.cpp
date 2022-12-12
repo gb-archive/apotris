@@ -805,7 +805,7 @@ void Game::place() {
     if(zoneTimer == 1)
         endZone();
 
-    if(maxClearDelay == 1 && clearLock){
+    if((maxClearDelay == 1 || gameMode == SURVIVAL) && clearLock){
         removeClearLock();
     }
 }
@@ -1202,7 +1202,7 @@ void Game::next() {
     pawn.y = (int)lengthY / 2;
     pawn.x = (int)lengthX / 2 - 2;
 
-    if((fromLock && irs) || rotationSystem == ARS){
+    if((irs && ((fromLock && maxClearDelay > 1) || !initialType)) || rotationSystem == ARS){
         int sum = rotates[0] + (rotates[1] * -1) + (rotates[2] * ((rotationSystem == ARS)? -1 : 2));
 
         pawn.rotation = sum + 4 * (sum < 0);
@@ -1246,7 +1246,7 @@ void Game::next() {
            break;
     }
 
-   if (check || !checkRotation(0, 0, pawn.rotation) || gameMode == CLASSIC){
+    if (check || !checkRotation(0, 0, pawn.rotation) || gameMode == CLASSIC){
         pawn.y-=1;
         if (!checkRotation(0, 0, pawn.rotation)){
             if(zoneTimer && zonedLines)
@@ -1266,7 +1266,7 @@ void Game::next() {
 
     softDrop = false;
 
-    if(holding && canHold && (ihs || rotationSystem == ARS))
+    if(holding && canHold && ((ihs && ((fromLock && maxClearDelay > 1) || !initialType)) || rotationSystem == ARS))
         hold(1);
 }
 
@@ -1393,7 +1393,7 @@ void Game::hold(int dir) {
         }
     }
 
-    if(rotationSystem == ARS || irs){
+    if(rotationSystem == ARS || (irs && ((fromLock && maxClearDelay > 1) || !initialType))){
         int sum = rotates[0] + (rotates[1] * -1) + (rotates[2] * ((rotationSystem == ARS)? -1 : 2));
 
         pawn.rotation = sum + (sum < 0) * 4;
@@ -1703,9 +1703,9 @@ void Game::generateGarbage(int height,int mode){
                 int counter = 0;
                 do{
                     hole = qran() % lengthX;
-                    if(++counter > 10)
+                    if(++counter > lengthX)
                         break;
-                }while((!board[i-1][hole] && height < garbageHeight) || hole == prevHole);
+                }while((!(i == lengthY-1 && garbageHeight == 0) && !board[i-1][hole]) || hole == prevHole);
             }
             for(int j = 0; j < lengthX; j++){
                 if(j == hole)
@@ -1733,9 +1733,9 @@ void Game::generateGarbage(int height,int mode){
                 int counter = 0;
                 do{
                     hole = qran() % (lengthX/2);
-                    if(++counter > 5)
+                    if(++counter > lengthX/2)
                         break;
-                }while((!board[(i-1)*2][hole*2] && height < garbageHeight) || hole == prevHole);
+                }while(!((i == lengthY-1 && garbageHeight == 0) && !board[(i-1)*2][hole*2]) || hole == prevHole);
             }
             for(int j = 0; j < lengthX/2; j++){
                 if(j == hole)
@@ -1868,6 +1868,7 @@ void Game::setTuning(Tuning newTune){
     maxClearDelay = 20;
     ihs = newTune.ihs;
     irs = newTune.irs;
+    initialType = newTune.initialType;
 }
 
 void Game::setMasterTuning(){
@@ -2161,6 +2162,8 @@ void Game::clearBoard(){
             board[i][j] = 0;
         }
     }
+
+    garbageHeight = 0;
 }
 
 void Game::fixConnected(std::list<int> sourceList){

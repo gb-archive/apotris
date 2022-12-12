@@ -95,8 +95,9 @@ typedef struct Settings{
     bool customDas;
     int ihs;
     int irs;
+    int initialType;
 
-    int placeHolder[94];
+    int placeHolder[93];
 }ALIGN(4) Settings;
 
 typedef struct Test{

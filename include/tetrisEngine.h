@@ -247,6 +247,7 @@ namespace Tetris
             bool delaySoftDrop = true;
             bool ihs = false;
             bool irs = false;
+            bool initialType = false;
     };
 
     class Game {
@@ -346,6 +347,7 @@ namespace Tetris
 
         bool ihs = false;
         bool irs = false;
+        bool initialType = false;
 
         bool rotates[3] = {false,false,false};
 

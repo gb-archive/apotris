@@ -857,6 +857,7 @@ Tuning getTuning(){
         t.delaySoftDrop = savefile->settings.delaySoftDrop,
         t.ihs = savefile->settings.ihs,
         t.irs = savefile->settings.irs,
+        t.initialType = savefile->settings.initialType,
     };
 
     return t;
