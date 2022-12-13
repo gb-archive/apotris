@@ -1856,7 +1856,16 @@ Drop Game::calculateDrop(){
 }
 
 void Game::setTuning(Tuning newTune){
-    if(gameMode == CLASSIC || gameMode == MASTER)
+    if(gameMode == CLASSIC)
+        return;
+
+
+    if(rotationSystem != ARS){
+        ihs = newTune.ihs;
+        irs = newTune.irs;
+    }
+
+    if(gameMode == MASTER)
         return;
 
     maxDas = newTune.das;
@@ -1865,10 +1874,8 @@ void Game::setTuning(Tuning newTune){
     dropLockMax = newTune.dropProtection;
     directionCancel = newTune.directionalDas;
     delaySoftDrop = newTune.delaySoftDrop;
-    maxClearDelay = 20;
-    ihs = newTune.ihs;
-    irs = newTune.irs;
     initialType = newTune.initialType;
+    maxClearDelay = 20;
 }
 
 void Game::setMasterTuning(){

@@ -149,6 +149,8 @@ void loadSave() {
         savefile->settings.irs = 0;
     if(savefile->settings.ihs < 0 || savefile->settings.ihs > 1)
         savefile->settings.ihs = 0;
+    if(savefile->settings.initialType < 0 || savefile->settings.initialType > 1)
+        savefile->settings.initialType = 0;
 
     if(savefile->newGame != SAVE_TAG){
 
@@ -305,6 +307,7 @@ void setDefaults(Save *save, int depth){
         save->settings.customDas = false;
         save->settings.irs = 0;
         save->settings.ihs = 0;
+        save->settings.initialType = 0;
 
         //check if select is already bound - if not, bind it to zone activation
         int* keys = (int*) &save->settings.keys;

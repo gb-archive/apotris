@@ -337,9 +337,9 @@ void handlingText(){
         aprint("OFF", endX, startY + space * 10);
 
     if (savefile->settings.initialType)
-        aprint("TYPE A", endX-1, startY + space * 11);
-    else
         aprint("TYPE B", endX-1, startY + space * 11);
+    else
+        aprint("TYPE A", endX-1, startY + space * 11);
 
     //show cursor
     if (selection == 0) {
