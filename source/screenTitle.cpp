@@ -1059,7 +1059,7 @@ void startText() {
     const int titleY = 1;
 
     if (!onSettings) {
-        aprint("v3.4.4", 0, 19);
+        aprint("v3.4.5", 0, 19);
 
         aprint("akouzoukos", 20, 19);
 
