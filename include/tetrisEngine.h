@@ -339,6 +339,7 @@ namespace Tetris
 
         bool stopLockReset = false;
         bool fromLock = false;
+        bool fromLockHold = false;
 
         std::list<int> historyList;
 

@@ -1266,7 +1266,7 @@ void Game::next() {
 
     softDrop = false;
 
-    if(holding && canHold && ((ihs && ((fromLock && maxClearDelay > 1) || !initialType)) || rotationSystem == ARS))
+    if(holding && canHold && ((ihs && ((fromLockHold && maxClearDelay > 1) || !initialType)) || rotationSystem == ARS))
         hold(1);
 }
 
@@ -1364,8 +1364,10 @@ void Game::hold(int dir) {
     holding = dir;
     if((clearLock || entryDelay) && gameMode != CLASSIC){
         // holding = dir;
+        fromLockHold = true;
         return;
     }else if(dir == 0){
+        fromLockHold = false;
         return;
     }
 
@@ -1434,6 +1436,7 @@ void Game::hold(int dir) {
     arrCounter = 0;
 
     dropLockTimer = 0;
+    fromLockHold = false;
     moveHistory.clear();
 
     statTracker.holds++;
@@ -1863,6 +1866,7 @@ void Game::setTuning(Tuning newTune){
     if(rotationSystem != ARS){
         ihs = newTune.ihs;
         irs = newTune.irs;
+        initialType = newTune.initialType;
     }
 
     if(gameMode == MASTER)
@@ -1874,7 +1878,6 @@ void Game::setTuning(Tuning newTune){
     dropLockMax = newTune.dropProtection;
     directionCancel = newTune.directionalDas;
     delaySoftDrop = newTune.delaySoftDrop;
-    initialType = newTune.initialType;
     maxClearDelay = 20;
 }
 
