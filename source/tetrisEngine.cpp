@@ -157,6 +157,7 @@ void Game::rotateTwice(int dir) {
 
 void Game::rotate(int dir){
     if ((clearLock || entryDelay)){
+        fromLockRotate = true;
         return;
     }else if(eventLock){
         return;
@@ -1202,7 +1203,7 @@ void Game::next() {
     pawn.y = (int)lengthY / 2;
     pawn.x = (int)lengthX / 2 - 2;
 
-    if((irs && ((fromLock && maxClearDelay > 1) || !initialType)) || rotationSystem == ARS){
+    if((irs && (((fromLockRotate) && maxClearDelay > 1) || !initialType)) || rotationSystem == ARS){
         int sum = rotates[0] + (rotates[1] * -1) + (rotates[2] * ((rotationSystem == ARS)? -1 : 2));
 
         pawn.rotation = sum + 4 * (sum < 0);
@@ -1265,6 +1266,8 @@ void Game::next() {
     arrCounter = 0;
 
     softDrop = false;
+
+    fromLockRotate = false;
 
     if(holding && canHold && ((ihs && ((fromLockHold && maxClearDelay > 1) || !initialType)) || rotationSystem == ARS))
         hold(1);
@@ -1395,7 +1398,7 @@ void Game::hold(int dir) {
         }
     }
 
-    if(rotationSystem == ARS || (irs && ((fromLock && maxClearDelay > 1) || !initialType))){
+    if(rotationSystem == ARS || (irs && ((fromLockRotate && maxClearDelay > 1) || !initialType))){
         int sum = rotates[0] + (rotates[1] * -1) + (rotates[2] * ((rotationSystem == ARS)? -1 : 2));
 
         pawn.rotation = sum + (sum < 0) * 4;
@@ -1661,10 +1664,8 @@ void Game::removeClearLock() {
 
     linesToClear = std::list<int>();
 
-    fromLock = true;
     if(!entryDelay)
         next();
-    fromLock = false;
 
     refresh = 1;
     zonedLines = 0;

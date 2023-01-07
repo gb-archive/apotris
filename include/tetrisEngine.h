@@ -338,8 +338,8 @@ namespace Tetris
         int decayTimer = 0;
 
         bool stopLockReset = false;
-        bool fromLock = false;
         bool fromLockHold = false;
+        bool fromLockRotate = false;
 
         std::list<int> historyList;
 
